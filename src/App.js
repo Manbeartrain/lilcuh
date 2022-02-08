@@ -11,37 +11,57 @@ import temp from '../src/assets/temp.png'
 
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import { useMoralisWeb3Api, useMoralis } from "react-moralis";
+import { NFTs } from "./components/NFTs";
 
 
 let mediumURL = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@kunalchaubal";
-
-
-
 
 function App() {
   const classes = useStyles()
 
   const [feed, setFeed] = useState()
   const [profile, setProfile] = useState()
+  const [nfts, setNFTs] = useState({})
+
+  const { Moralis } = useMoralis()
+  const Web3Api = useMoralisWeb3Api()
+
+  const fetchNFTs = async () => {
+    const options = { chain: 'eth', address: process.env.REACT_APP_WALLET };
+    const results = await Web3Api.account.getNFTs(options)
+
+    return results
+  }
+
+  const serverUrl = process.env.REACT_APP_MORALIS_SERVER;
+  const appId = process.env.REACT_APP_MORALIS_APP_ID;
 
   useEffect(() => {
-    axios.get(mediumURL).then((res) => {
-      setFeed(res.data.items)
-      setProfile(res.data.feed)
-    })
+    Moralis.start({ serverUrl, appId })
+    fetchNFTs().then((res) => setNFTs(res))
+
+    // MEDIUM CALL
+
+    // axios.get(mediumURL).then((res) => {
+    //   setFeed(res.data.items)
+    //   setProfile(res.data.feed)
+    // })
+
   }, []);
   return (
     <div className={classes.appContainer}>
       <div className={classes.headerContainer} style={{ backgroundImage: `url(${BG})`, backgroundSize: 'cover' }}>
         <div className={classes.heroContainer} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div className={classes.iconContainer}>
-            <img src={lilcuh} style={{ width: '90%', marginLeft: 70}} />
+          <div className={classes.iconContainer} >
+            <img src={lilcuh} style={{ width: '90%', marginLeft: 70, cursor: 'pointer' }} onClick={() => window.open('https://opensea.io/collection/deadfellaz')} />
           </div>
           <div className={classes.headerInfoContainer}>
             <h2 className={classes.headerTitle}>NO QUEMA CUH!!</h2>
             <p className={classes.headerSubtext}>
-              It is a long established fact that a reader will be distracted by the readable content of a page when
-              looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution.
+              Join the LatinX inspired crypto community behind Dead Fellaz #1451. Follow our Twitter for the latest
+              in crypto news or join our discord and come speak with our community. Zero miedo mi compa.
+              Everyone welcomed, cause everyone's a cuh.
             </p>
             <div className={classes.socialContainer}>
               <div className={classes.socialIcon}>
@@ -57,26 +77,14 @@ function App() {
                 <img src={mediumIcon} style={{ width: '45%' }} />
               </div>
             </div>
-
-            <div className={classes.nftContainer}>
-              <p style={{ fontSize: 32, textTransform: 'uppercase', fontWeight: '800', marginBottom: 20, color: 'lightgreen' }}>Our NFT collection</p>
-              <div className={classes.collection}>
-                <div className={classes.nft}>
-                  <img src={lilcuh} style={{ width: '80%' }} />
-                </div>
-                <div className={classes.nft}>
-                  <img src={lilcuh} style={{ width: '80%' }} />
-                </div>
-                <div className={classes.nft}>
-                  <img src={lilcuh} style={{ width: '80%' }} />
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
-      <div className={classes.blogContainer}>
+      <NFTs nfts={nfts.result} />
+
+      {/* BLOG CONTAINER */ }
+
+      {/* <div className={classes.blogContainer}>
         {console.log(profile)}
         <div className={classes.profileThumbnail} style={{backgroundImage: `url(https://media.discordapp.net/attachments/717579666264817745/939612403614761000/IMG_4817.png)`, backgroundSize: 'cover'}}>
  
@@ -103,7 +111,7 @@ function App() {
             )
           })}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -211,7 +219,7 @@ const useStyles = makeStyles({
     '&:hover': {
       color: 'white',
       background: "#02072b",
-    
+
     }
   },
   heroContainer: {
