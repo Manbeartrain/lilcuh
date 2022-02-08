@@ -1,11 +1,17 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles'
+import { useMediaQuery } from '@mui/material';
+
+
 
 export const NFTs = ({ nfts }) => {
     const classes = useStyles()
+    const mobile = useMediaQuery('(max-width:600px)');
+    const tablet = useMediaQuery('(max-width:820px)');
+
     return (
         <div className={classes.container}>
-            <h2 className={classes.title}>Our NFT Collection</h2>
+            <h2 className={mobile ? classes.mobileTitle : classes.title}>Our NFT Collection</h2>
             <p className={classes.subText}>(Si Quema Cuh)</p>
             <div className={classes.flexContainer}>
                 <div className={classes.nftContainer}>
@@ -16,23 +22,9 @@ export const NFTs = ({ nfts }) => {
                             return null
                         } else {
                             return (
-                                <div className={classes.nft} key={index} onClick={() => window.open(`https://opensea.io/assets/${nft && nft.token_address}/${nft && nft.token_id}`)}>
+                                <div className={mobile ? classes.mobileNft : ( tablet ? classes.tabletNft : classes.nft)} key={index} onClick={() => window.open(`https://opensea.io/assets/${nft && nft.token_address}/${nft && nft.token_id}`)}>
                                     <div className={classes.nftImage} style={{ backgroundImage: `url(${metadata && metadata.image})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
-                                    <div className={classes.nftInfo}>
-                                        <h2 className={classes.nftTitle}>{metadata && metadata.title || metadata && metadata.name}</h2>
-                                        <div className={classes.traits}>
-                                            {metadata && metadata.attributes.map((trait, index) => {
-                                                return (
-                                                    trait && trait.value === 'No'
-                                                        ? null
-                                                        :
-                                                        <div key={index} className={classes.trait}>
-                                                            <p>{trait.value}</p>
-                                                        </div>
-                                                )
-                                            })}
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             )
                         }
@@ -74,6 +66,14 @@ const useStyles = makeStyles({
         marginTop: 50,
         color: '#ec407a',
     },
+    mobileTitle:{
+        fontSize: 50,
+        width: '80%',
+        textAlign:'center',
+        textTransform: 'uppercase',
+        marginTop: 50,
+        color: '#ec407a',
+    },
     subText: {
         fontWeight: '600',
         letterSpacing: 4,
@@ -85,7 +85,7 @@ const useStyles = makeStyles({
     nft: {
         display: 'flex',
         flexDirection: 'column',
-        height: 600,
+        height: 400,
         width: '25%',
         marginLeft: 20,
         marginRight: 20,
@@ -95,8 +95,34 @@ const useStyles = makeStyles({
         border: '8px solid #ec407a ',
         cursor: 'pointer',
     },
+    mobileNft:{
+        display: 'flex',
+        flexDirection: 'column',
+        height: 300,
+        width: '100%',
+        marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 50,
+        borderRadius: 8,
+        background: 'red',
+        border: '8px solid #ec407a ',
+        cursor: 'pointer',
+    },
+    tabletNft:{
+        display: 'flex',
+        flexDirection: 'column',
+        height: 550,
+        width: '75%',
+        marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 50,
+        borderRadius: 8,
+        background: 'red',
+        border: '8px solid #ec407a ',
+        cursor: 'pointer',
+    },
     nftImage: {
-        height: '60%',
+        height: '100%',
         width: '100%',
     },
     nftInfo: {

@@ -2,6 +2,7 @@ import { makeStyles } from "@mui/styles"
 import axios from "axios"
 import { useEffect, useState } from "react";
 import ToText from "./utils/toText";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import BG from '../src/assets/background.jpg'
 import lilcuh from '../src/assets/lilcuh.png'
@@ -19,6 +20,9 @@ let mediumURL = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com
 
 function App() {
   const classes = useStyles()
+
+  const mobile = useMediaQuery('(max-width:600px)');
+  const tablet = useMediaQuery('(max-width:820px')
 
   const [feed, setFeed] = useState()
   const [profile, setProfile] = useState()
@@ -53,27 +57,27 @@ function App() {
     <div className={classes.appContainer}>
       <div className={classes.headerContainer} style={{ backgroundImage: `url(${BG})`, backgroundSize: 'cover' }}>
         <div className={classes.heroContainer} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div className={classes.iconContainer} >
-            <img src={lilcuh} style={{ width: '90%', marginLeft: 70, cursor: 'pointer' }} onClick={() => window.open('https://opensea.io/collection/deadfellaz')} />
+          <div className={mobile ? classes.mobileIconContainer : (tablet ? classes.tabletIconContainer : classes.iconContainer)} >
+            <img src={lilcuh} style={{ width: mobile ? '90%' : (tablet ? '70%' : '90%'), marginLeft: mobile ? 30 : 70, cursor: 'pointer' }} onClick={() => window.open('https://opensea.io/collection/deadfellaz')} />
           </div>
-          <div className={classes.headerInfoContainer}>
-            <h2 className={classes.headerTitle}>NO QUEMA CUH!!</h2>
-            <p className={classes.headerSubtext}>
+          <div className={mobile ? classes.mobileInfoContainer : (tablet ? classes.tabletInfoContainer : classes.headerInfoContainer)}>
+            <h2 className={mobile ? classes.mobileTitle : (tablet ? classes.tabletTitle : classes.headerTitle)}>NO QUEMA CUH!!</h2>
+            <p className={mobile ? classes.mobileSubText : (tablet ? classes.tabletHeaderSubText : classes.headerSubtext)}>
               Join the LatinX inspired crypto community behind Dead Fellaz #1451. Follow our Twitter for the latest
               in crypto news or join our discord and come speak with our community. Zero miedo mi compa.
               Everyone welcomed, cause everyone's a cuh.
             </p>
             <div className={classes.socialContainer}>
-              <div className={classes.socialIcon}>
+              <div className={mobile ? classes.mobileSocialIcon : ( tablet ? classes.tabletSocialIcon : classes.socialIcon)} onClick={() => window.open('https://www.instagram.com/daboigbae')}>
                 <InstagramIcon style={{ fontSize: 30, color: 'lightgreen' }} />
               </div>
-              <div className={classes.socialIcon}>
+              <div className={mobile ? classes.mobileSocialIcon : ( tablet ? classes.tabletSocialIcon : classes.socialIcon)} onClick={() => window.open('https://twitter.com/daboigbae')}>
                 <TwitterIcon style={{ fontSize: 30, color: 'lightgreen' }} />
               </div>
-              <div className={classes.socialIcon}>
+              <div className={mobile ? classes.mobileSocialIcon : ( tablet ? classes.tabletSocialIcon : classes.socialIcon)} onClick={() => window.open('https://discord.gg/vTUr4Pwj')}>
                 <img src={discordIcon} style={{ width: '40%', }} />
               </div>
-              <div className={classes.socialIcon}>
+              <div className={mobile ? classes.mobileSocialIcon : ( tablet ? classes.tabletSocialIcon : classes.socialIcon)} onClick={() => window.open('https://medium.com/@daboigbae')}>
                 <img src={mediumIcon} style={{ width: '45%' }} />
               </div>
             </div>
@@ -82,7 +86,7 @@ function App() {
       </div>
       <NFTs nfts={nfts.result} />
 
-      {/* BLOG CONTAINER */ }
+      {/* BLOG CONTAINER */}
 
       {/* <div className={classes.blogContainer}>
         {console.log(profile)}
@@ -134,14 +138,41 @@ const useStyles = makeStyles({
     width: '100vw',
   },
   headerTitle: {
+    textAlign: 'center',
     fontSize: 70,
     fontWeight: '800',
     color: 'lightgreen',
+  },
+  mobileTitle: {
+    textAlign: 'center',
+    fontSize: 55,
+    fontWeight: '800',
+    color: 'lightgreen'
+  },
+  tabletTitle:{
+    textAlign: 'center',
+    fontSize: 80,
+    fontWeight: '800',
+    color: 'lightgreen'
   },
   headerSubtext: {
     fontSize: 20,
     width: '100%',
     opacity: .6,
+    textAlign: 'center',
+    color: 'lightgreen'
+  },
+  mobileSubText: {
+    fontSize: 20,
+    width: '85%',
+    opacity: .8,
+    textAlign: 'center',
+    color: 'lightgreen'
+  },
+  tabletHeaderSubText:{
+    fontSize: 24,
+    width: '85%',
+    opacity: .8,
     textAlign: 'center',
     color: 'lightgreen'
   },
@@ -187,7 +218,28 @@ const useStyles = makeStyles({
     background: '#6a0e89',
     border: '3px solid #6a0e89',
     borderRadius: 100,
-
+  },
+  mobileSocialIcon:{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 20,
+    height: 50,
+    width: 50,
+    background: '#6a0e89',
+    border: '3px solid #6a0e89',
+    borderRadius: 100,
+  },
+  tabletSocialIcon:{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 20,
+    height: 85,
+    width: 85,
+    background: '#6a0e89',
+    border: '3px solid #6a0e89',
+    borderRadius: 100,
   },
   imageContainer: {
     height: 225,
@@ -235,6 +287,20 @@ const useStyles = makeStyles({
     height: '60%',
     width: '40%',
   },
+  mobileIconContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    height: '40%',
+    width: '100%',
+  },
+  tabletIconContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    height: '50%',
+    width: '100%',
+  },
   headerInfoContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -242,6 +308,22 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     height: '40%',
     width: '40%',
+  },
+  mobileInfoContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    height: '60%',
+    width: '100%',
+  },
+  tabletInfoContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    height: '50%',
+    width: '100%',
   },
   blogContainer: {
     display: 'flex',
