@@ -28,7 +28,7 @@ function App() {
   const Web3Api = useMoralisWeb3Api()
 
   const fetchNFTs = async () => {
-    const options = { chain: 'eth', address: process.env.REACT_APP_WALLET };
+    const options = { chain: 'eth', address: '0x88eFB8722c36B28De3F842ED7B80f6a494785d2c' };
     const results = await Web3Api.account.getNFTs(options)
 
     return results
