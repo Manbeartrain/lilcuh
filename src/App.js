@@ -24,7 +24,7 @@ function App() {
 
   const mobile = useMediaQuery('(max-width:600px)');
   const tablet = useMediaQuery('(max-width:1000px)')
-  const heightCap = useMediaQuery('(max-height:1000px)')
+  const heightCap = useMediaQuery('(max-height:900px)')
 
   const [feed, setFeed] = useState()
   const [profile, setProfile] = useState()

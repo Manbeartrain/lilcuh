@@ -8,7 +8,7 @@ import { BallTriangle } from 'react-loader-spinner';
 export const NFTs = ({ nfts, isLoading }) => {
     const classes = useStyles()
     const mobile = useMediaQuery('(max-width:600px)');
-    const tablet = useMediaQuery('(max-width:820px)');
+    const tablet = useMediaQuery('(max-width:1000px)');
 
     return (
         <div className={classes.container}>
@@ -18,15 +18,19 @@ export const NFTs = ({ nfts, isLoading }) => {
                     <p className={classes.subText}>(Si Quema Cuh)</p>
                     <div className={classes.flexContainer}>
                         <div className={classes.nftContainer}>
-
                             {nfts && nfts.map((nft, index) => {
+                                let image 
                                 const metadata = nft && JSON.parse(nft.metadata)
-                                if (nft.is_valid === 0 || nft.name === 'DeadFrenz Pass') {
+                                if(metadata && metadata.image.includes('ipfs://')){
+                                    image = metadata.image.replace(':/', '')
+                                    console.log(image)
+                                }
+                                if (nft.is_valid === 0) {
                                     return null
                                 } else {
                                     return (
                                         <div className={mobile ? classes.mobileNft : (tablet ? classes.tabletNft : classes.nft)} key={index} onClick={() => window.open(`https://opensea.io/assets/${nft && nft.token_address}/${nft && nft.token_id}`)}>
-                                            <div className={classes.nftImage} style={{ backgroundImage: `url(${metadata && metadata.image})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
+                                            <div className={classes.nftImage} style={{ backgroundImage: `url(${image ? `https://ipfs.io/` + image : (metadata && metadata.image)})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
 
                                         </div>
                                     )
