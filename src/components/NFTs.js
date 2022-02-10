@@ -1,36 +1,41 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles'
 import { useMediaQuery } from '@mui/material';
+import { BallTriangle } from 'react-loader-spinner';
 
 
 
-export const NFTs = ({ nfts }) => {
+export const NFTs = ({ nfts, isLoading }) => {
     const classes = useStyles()
     const mobile = useMediaQuery('(max-width:600px)');
     const tablet = useMediaQuery('(max-width:820px)');
 
     return (
         <div className={classes.container}>
-            <h2 className={mobile ? classes.mobileTitle : classes.title}>Our NFT Collection</h2>
-            <p className={classes.subText}>(Si Quema Cuh)</p>
-            <div className={classes.flexContainer}>
-                <div className={classes.nftContainer}>
-                
-                    {nfts && nfts.map((nft, index) => {
-                        const metadata = nft && JSON.parse(nft.metadata)
-                        if (nft.is_valid === 0 || nft.name === 'DeadFrenz Pass') {
-                            return null
-                        } else {
-                            return (
-                                <div className={mobile ? classes.mobileNft : ( tablet ? classes.tabletNft : classes.nft)} key={index} onClick={() => window.open(`https://opensea.io/assets/${nft && nft.token_address}/${nft && nft.token_id}`)}>
-                                    <div className={classes.nftImage} style={{ backgroundImage: `url(${metadata && metadata.image})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
-                                    
-                                </div>
-                            )
-                        }
-                    })}
-                </div>
-            </div>
+            {isLoading ? <BallTriangle width={200} color="#f84b67" arialLabel="loading" /> :
+                <>
+                    <h2 className={mobile ? classes.mobileTitle : classes.title}>Our NFT Collection</h2>
+                    <p className={classes.subText}>(Si Quema Cuh)</p>
+                    <div className={classes.flexContainer}>
+                        <div className={classes.nftContainer}>
+
+                            {nfts && nfts.map((nft, index) => {
+                                const metadata = nft && JSON.parse(nft.metadata)
+                                if (nft.is_valid === 0 || nft.name === 'DeadFrenz Pass') {
+                                    return null
+                                } else {
+                                    return (
+                                        <div className={mobile ? classes.mobileNft : (tablet ? classes.tabletNft : classes.nft)} key={index} onClick={() => window.open(`https://opensea.io/assets/${nft && nft.token_address}/${nft && nft.token_id}`)}>
+                                            <div className={classes.nftImage} style={{ backgroundImage: `url(${metadata && metadata.image})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
+
+                                        </div>
+                                    )
+                                }
+                            })}
+                        </div>
+                    </div>
+                </>
+            }
         </div>
     )
 };
@@ -41,7 +46,7 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100%',
+        minHeight: '100vh',
         width: '100%',
         background: '#04061e'
     },
@@ -66,10 +71,10 @@ const useStyles = makeStyles({
         marginTop: 50,
         color: '#ec407a',
     },
-    mobileTitle:{
+    mobileTitle: {
         fontSize: 50,
         width: '80%',
-        textAlign:'center',
+        textAlign: 'center',
         textTransform: 'uppercase',
         marginTop: 50,
         color: '#ec407a',
@@ -95,7 +100,7 @@ const useStyles = makeStyles({
         border: '8px solid #ec407a ',
         cursor: 'pointer',
     },
-    mobileNft:{
+    mobileNft: {
         display: 'flex',
         flexDirection: 'column',
         height: 300,
@@ -108,7 +113,7 @@ const useStyles = makeStyles({
         border: '8px solid #ec407a ',
         cursor: 'pointer',
     },
-    tabletNft:{
+    tabletNft: {
         display: 'flex',
         flexDirection: 'column',
         height: 550,

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ToText from "./utils/toText";
 import useMediaQuery from '@mui/material/useMediaQuery';
 
+
 import BG from '../src/assets/background.jpg'
 import lilcuh from '../src/assets/lilcuh.png'
 import discordIcon from '../src/assets/discordIcon.png'
@@ -27,6 +28,7 @@ function App() {
   const [feed, setFeed] = useState()
   const [profile, setProfile] = useState()
   const [nfts, setNFTs] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
 
   const { Moralis } = useMoralis()
   const Web3Api = useMoralisWeb3Api()
@@ -42,8 +44,9 @@ function App() {
   const appId = process.env.REACT_APP_MORALIS_APP_ID;
 
   useEffect(() => {
+    setIsLoading(true)
     Moralis.start({ serverUrl, appId })
-    fetchNFTs().then((res) => setNFTs(res))
+    fetchNFTs().then((res) => setNFTs(res)).then(() => setIsLoading(false))
 
     // MEDIUM CALL
 
@@ -68,23 +71,17 @@ function App() {
               Everyone welcomed, cause everyone's a cuh.
             </p>
             <div className={classes.socialContainer}>
-              <div className={mobile ? classes.mobileSocialIcon : ( tablet ? classes.tabletSocialIcon : classes.socialIcon)} onClick={() => window.open('https://www.instagram.com/daboigbae')}>
-                <InstagramIcon style={{ fontSize: 30, color: 'lightgreen' }} />
-              </div>
-              <div className={mobile ? classes.mobileSocialIcon : ( tablet ? classes.tabletSocialIcon : classes.socialIcon)} onClick={() => window.open('https://twitter.com/daboigbae')}>
+              <div className={mobile ? classes.mobileSocialIcon : (tablet ? classes.tabletSocialIcon : classes.socialIcon)} onClick={() => window.open('https://twitter.com/daboigbae')}>
                 <TwitterIcon style={{ fontSize: 30, color: 'lightgreen' }} />
               </div>
-              <div className={mobile ? classes.mobileSocialIcon : ( tablet ? classes.tabletSocialIcon : classes.socialIcon)} onClick={() => window.open('https://discord.gg/vTUr4Pwj')}>
-                <img src={discordIcon} style={{ width: '40%', }} />
-              </div>
-              <div className={mobile ? classes.mobileSocialIcon : ( tablet ? classes.tabletSocialIcon : classes.socialIcon)} onClick={() => window.open('https://medium.com/@daboigbae')}>
-                <img src={mediumIcon} style={{ width: '45%' }} />
+              <div className={mobile ? classes.mobileSocialIcon : (tablet ? classes.tabletSocialIcon : classes.socialIcon)} onClick={() => window.open('https://discord.gg/vTUr4Pwj')}>
+                <img src={discordIcon} style={{ width: '70%', }} />
               </div>
             </div>
           </div>
         </div>
       </div>
-      <NFTs nfts={nfts.result} />
+      <NFTs nfts={nfts.result} isLoading={isLoading} />
 
       {/* BLOG CONTAINER */}
 
@@ -149,7 +146,7 @@ const useStyles = makeStyles({
     fontWeight: '800',
     color: 'lightgreen'
   },
-  tabletTitle:{
+  tabletTitle: {
     textAlign: 'center',
     fontSize: 80,
     fontWeight: '800',
@@ -169,7 +166,7 @@ const useStyles = makeStyles({
     textAlign: 'center',
     color: 'lightgreen'
   },
-  tabletHeaderSubText:{
+  tabletHeaderSubText: {
     fontSize: 24,
     width: '85%',
     opacity: .8,
@@ -213,13 +210,14 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 20,
-    height: 55,
-    width: 55,
+    height: 45,
+    width: 45,
     background: '#6a0e89',
     border: '3px solid #6a0e89',
     borderRadius: 100,
+    cursor: 'pointer',
   },
-  mobileSocialIcon:{
+  mobileSocialIcon: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -230,7 +228,7 @@ const useStyles = makeStyles({
     border: '3px solid #6a0e89',
     borderRadius: 100,
   },
-  tabletSocialIcon:{
+  tabletSocialIcon: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
