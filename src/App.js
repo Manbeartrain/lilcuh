@@ -23,7 +23,8 @@ function App() {
   const classes = useStyles()
 
   const mobile = useMediaQuery('(max-width:600px)');
-  const tablet = useMediaQuery('(max-width:820px')
+  const tablet = useMediaQuery('(max-width:1000px)')
+  const heightCap = useMediaQuery('(max-height:1000px)')
 
   const [feed, setFeed] = useState()
   const [profile, setProfile] = useState()
@@ -60,8 +61,8 @@ function App() {
     <div className={classes.appContainer}>
       <div className={classes.headerContainer} style={{ backgroundImage: `url(${BG})`, backgroundSize: 'cover' }}>
         <div className={classes.heroContainer} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div className={mobile ? classes.mobileIconContainer : (tablet ? classes.tabletIconContainer : classes.iconContainer)} >
-            <img src={lilcuh} style={{ width: mobile ? '90%' : (tablet ? '70%' : '90%'), marginLeft: mobile ? 30 : 70, cursor: 'pointer' }} onClick={() => window.open('https://opensea.io/collection/deadfellaz')} />
+          <div className={mobile ? classes.mobileIconContainer : (tablet ? classes.tabletIconContainer : classes.iconContainer)} style={{display: heightCap ? 'none' : null}} >
+            <img src={lilcuh} style={{ width: mobile ? '80%' : (tablet ? '70%' : '80%'), height: 'auto', marginLeft: mobile ? 30 : 70, cursor: 'pointer',}} onClick={() => window.open('https://opensea.io/collection/deadfellaz')} />
           </div>
           <div className={mobile ? classes.mobileInfoContainer : (tablet ? classes.tabletInfoContainer : classes.headerInfoContainer)}>
             <h2 className={mobile ? classes.mobileTitle : (tablet ? classes.tabletTitle : classes.headerTitle)}>NO QUEMA CUH!!</h2>
@@ -136,7 +137,7 @@ const useStyles = makeStyles({
   },
   headerTitle: {
     textAlign: 'center',
-    fontSize: 70,
+    fontSize: '4em',
     fontWeight: '800',
     color: 'lightgreen',
   },
@@ -282,7 +283,7 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-end',
-    height: '60%',
+    height: '50%',
     width: '40%',
   },
   mobileIconContainer: {
@@ -304,7 +305,7 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    height: '40%',
+    height: '50%',
     width: '40%',
   },
   mobileInfoContainer: {
