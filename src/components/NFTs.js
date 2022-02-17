@@ -19,11 +19,10 @@ export const NFTs = ({ nfts, isLoading }) => {
                     <div className={classes.flexContainer}>
                         <div className={classes.nftContainer}>
                             {nfts && nfts.map((nft, index) => {
-                                let image 
+                                let image
                                 const metadata = nft && JSON.parse(nft.metadata)
-                                if(metadata && metadata.image.includes('ipfs://')){
+                                if (metadata && metadata.image.includes('ipfs://')) {
                                     image = metadata.image.replace(':/', '')
-                                    console.log(image)
                                 }
                                 if (nft.is_valid === 0) {
                                     return null
